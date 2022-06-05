@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.homeoffice.projectmongo.domain.User;
+import com.homeoffice.projectmongo.dto.UserDTO;
 import com.homeoffice.projectmongo.repository.UserRepository;
 import com.homeoffice.projectmongo.services.exception.ObjectNotFoundException;
 
@@ -20,9 +21,25 @@ public class UserService { 	//a camada de servico acessa o repositorio
 		return repo.findAll();
 	}
 	
+	//metodo de consulta
 	//substituindo a verificacao de valor "null" com um "if" por um Optional (Java 9+)
 	public User findById(String id) {
 		Optional<User> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
 		}
+	
+	//metodo insert
+	public User insert(User obj) {
+		return repo.insert(obj);
+	}
+	
+	/*
+	 * Não coloquei o metodo "fromDTO" no pacote "DTO" pq em caso de instanciacao de "User"
+	 * atraves do banco de dados, eu aproveito a dependencia do BD em UserService, isso
+	 * facilita uma futura manutencao no codigo com acesso a dados do BD.
+	 */
+	//metodo fromDTO
+	public User fromDTO(UserDTO objDto) {
+		return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
+	}
 }
