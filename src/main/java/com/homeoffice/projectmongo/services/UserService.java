@@ -33,6 +33,11 @@ public class UserService { 	//a camada de servico acessa o repositorio
 		return repo.insert(obj);
 	}
 	
+	public void delete(String id) {
+		findById(id);				//aproveitando o metodo "findById acima para tratar a exception
+		repo.deleteById(id);		//Obs: usar deleteById() no lugar do delete() no Spring Boot 2+
+	}
+	
 	/*
 	 * Não coloquei o metodo "fromDTO" no pacote "DTO" pq em caso de instanciacao de "User"
 	 * atraves do banco de dados, eu aproveito a dependencia do BD em UserService, isso
