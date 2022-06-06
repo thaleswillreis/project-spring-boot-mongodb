@@ -51,6 +51,14 @@ public class UserResource {												//controlador REST acessa a camada de ser
 		service.delete(id);
 		return ResponseEntity.noContent().build(); 						//como não necessita retornar nada, usa-se o noContent para retornar o codigo 204
 	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	public ResponseEntity<Void> update(@RequestBody UserDTO objDto, @PathVariable String id) {
+		User obj = service.fromDTO(objDto);							//instancia um obj a partir do objDTO da requisicao
+		obj.setId(id);												//garantia de que o objeto tem o id da requisicao
+		obj = service.update(obj);
+		return ResponseEntity.noContent().build();
+	}
 }
 
 /*
