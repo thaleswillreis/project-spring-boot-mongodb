@@ -53,6 +53,9 @@ public class Instantiation implements CommandLineRunner {
 		
 		//salvando os dados do post
 		postRepository.saveAll(Arrays.asList(post1, post2));
+		
+		thassia.getPosts().addAll(Arrays.asList(post1, post2));
+		userRepository.save(thassia);
 	}
 
 }
