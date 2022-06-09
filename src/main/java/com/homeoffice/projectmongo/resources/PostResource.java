@@ -1,5 +1,6 @@
 package com.homeoffice.projectmongo.resources;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,18 @@ public class PostResource {
 		text = URL.decodeParam(text);						//chama nosso metodo que decodifica o texto para UTF-8
 		List<Post> list = service.findByTitle(text); 		//lista de post recebe nossa pesquisa personalizada
 		return ResponseEntity.ok().body(list);				//retorna nossa lista pronta
+	}
+	
+	@RequestMapping(value="/fullsearch", method=RequestMethod.GET)
+	public ResponseEntity<List<Post>> fullSearch(
+			@RequestParam(value="text", defaultValue="") String text,
+			@RequestParam(value="minDate", defaultValue="") String minDate,
+			@RequestParam(value="maxDate", defaultValue="") String maxDate) {
+		text = URL.decodeParam(text);
+		Date min = URL.convertDate(minDate, new Date(0L));
+		Date max = URL.convertDate(maxDate, new Date());
+		List<Post> list = service.fullSearch(text, min, max);
+		return ResponseEntity.ok().body(list);
 	}
 }
 
